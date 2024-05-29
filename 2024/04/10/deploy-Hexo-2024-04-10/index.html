@@ -1,140 +1,228 @@
 <!DOCTYPE html>
-<html>
-  <!-- Html Head Tag-->
-  <head>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="Dream">
-  <!-- Open Graph Data -->
-  <meta property="og:title" content="博客第一步：将Hexo部署在GitHub上"/>
-  <meta property="og:description" content="" />
-  <meta property="og:site_name" content="Dream&#39;s Profile"/>
-  <meta property="og:type" content="article" />
-  <meta property="og:image" content="https://shuo-liu16.github.io.github.io"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shuo-liu16.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Hexo 是一个快速、简单且强大的静态博客框架，与 GitHub 结合使用可轻松搭建个人博客网站。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="博客第一步：将Hexo部署在GitHub上">
+<meta property="og:url" content="https://shuo-liu16.github.io/2024/04/10/deploy-Hexo-2024-04-10/index.html">
+<meta property="og:site_name" content="Dream&#39;s Profile">
+<meta property="og:description" content="Hexo 是一个快速、简单且强大的静态博客框架，与 GitHub 结合使用可轻松搭建个人博客网站。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://shuo-liu16.github.io/images/1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-04-10%20223103.png">
+<meta property="og:image" content="https://shuo-liu16.github.io/images/1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-04-10%20223244.png">
+<meta property="article:published_time" content="2024-04-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-04-11T04:35:12.633Z">
+<meta property="article:author" content="Dream">
+<meta property="article:tag" content="hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://shuo-liu16.github.io/images/1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-04-10%20223103.png">
+
+<link rel="canonical" href="https://shuo-liu16.github.io/2024/04/10/deploy-Hexo-2024-04-10/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>博客第一步：将Hexo部署在GitHub上 | Dream's Profile</title>
   
-    <link rel="alternate" href="/atom.xml" title="Dream&#39;s Profile" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-
-  <!-- Site Title -->
-  <title>Dream's Profile</title>
-
-  <!-- Bootstrap CSS -->
-  
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-
-  <!-- Custom CSS -->
-  
-  
-<link rel="stylesheet" href="/css/style.light.css">
 
 
-  <!-- Google Analytics -->
-  
-
-<meta name="generator" content="Hexo 7.2.0"></head>
-
-  <body>
-    <!-- Page Header -->
 
 
-<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <div class="page-title with-background-image">
-          <p class="title">博客第一步：将Hexo部署在GitHub上</p>
-          <p class="subtitle"></p>
-        </div>
-        <div class="site-menu with-background-image">
-          <ul>
-            
-              <li>
-                <a href="/">
-                  
-                  Home
-                  
-                </a>
-              </li>
-            
-              <li>
-                <a href="/archives">
-                  
-                  Archives
-                  
-                </a>
-              </li>
-            
-              <li>
-                <a target="_blank" rel="noopener" href="https://github.com/Dream-verylively">
-                  
-                  Github
-                  
-                </a>
-              </li>
-            
-              <li>
-                <a href="mailto:shuo_liu16@outlook.com">
-                  
-                  Email
-                  
-                </a>
-              </li>
-            
-              <li>
-                <a href="/resume/Shuo_Liu_s_resume__chinese1_.pdf">
-                  
-                  Resume
-                  
-                </a>
-              </li>
-            
-          </ul>
-        </div>
-      </div>
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
-</header>
 
-<article>
-  <div class="container typo">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <div class="post-info text-muted">
-          
-            <!-- Author -->
-            <span class="author info">By Dream</span>
-          
-          <!-- Date -->
-          <span class="date-time info">On
-            <span class="date">2024-04-10</span>
-            <span class="time">22:10:25</span>
-          </span>
-          
-          <!--  Categories  -->
-            <span class="categories info">Under 
+  <div class="site-meta">
 
-<a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a>
-</span>
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Dream's Profile</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
           
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://shuo-liu16.github.io/2024/04/10/deploy-Hexo-2024-04-10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Dream">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dream's Profile">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          博客第一步：将Hexo部署在GitHub上
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-04-10 00:00:00" itemprop="dateCreated datePublished" datetime="2024-04-10T00:00:00+08:00">2024-04-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-04-11 12:35:12" itemprop="dateModified" datetime="2024-04-11T12:35:12+08:00">2024-04-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">博客搭建</span></a>
+                </span>
+            </span>
+
+          
+
         </div>
-        <!-- Tags -->
-        
-          <div class="post-tags text-muted">
-            Tags: 
+      </header>
 
-<a class="tag" href="/tags/hexo/">#hexo</a>
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
-
-          </div>
-        
-        <!-- Post Main Content -->
-        <div class="post-content">
-          <p>Hexo 是一个快速、简单且强大的静态博客框架，与 GitHub 结合使用可轻松搭建个人博客网站。</p>
+      
+        <p>Hexo 是一个快速、简单且强大的静态博客框架，与 GitHub 结合使用可轻松搭建个人博客网站。</p>
 <span id="more"></span>
 
 <p>Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他标记语言）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。其主题，模板也更加丰富多样，更适合创建功能丰富的个人博客或其他类型的静态网站。</p>
@@ -183,44 +271,196 @@
 
 <p>看这个：<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/#Node-js-%E7%89%88%E6%9C%AC%E9%99%90%E5%88%B6">版本限制</a></p>
 <h6 id="写在最后：这个过程并不是一帆风顺的，很多时候甚至让我痛苦，但最后我坚持下来了，现在想想尽管痛苦，但是成功了，似乎还不错。"><a href="#写在最后：这个过程并不是一帆风顺的，很多时候甚至让我痛苦，但最后我坚持下来了，现在想想尽管痛苦，但是成功了，似乎还不错。" class="headerlink" title="写在最后：这个过程并不是一帆风顺的，很多时候甚至让我痛苦，但最后我坚持下来了，现在想想尽管痛苦，但是成功了，似乎还不错。"></a>写在最后：这个过程并不是一帆风顺的，很多时候甚至让我痛苦，但最后我坚持下来了，现在想想尽管痛苦，但是成功了，似乎还不错。</h6>
-        </div>
-      </div>
     </div>
-  </div>
-</article>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/hexo/" rel="tag"># hexo</a>
+          </div>
+
+        
 
 
-
-    <!-- Footer -->
-<footer>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <p class="copyright text-muted">
-          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
-          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
-        <p class="copyright text-muted">
-          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
-        </p>
-      </div>
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2024/05/28/hello-world/" rel="next" title="Hello World">
+      Hello World <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-  </div>
-</footer>
+      </footer>
+    
+  </article>
+  
+  
+  
 
 
-    <!-- After Footer Scripts -->
 
-<script src="/js/highlight.pack.js"></script>
+          </div>
+          
 
 <script>
-  document.addEventListener("DOMContentLoaded", function(event) {
-    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
-    codeBlocks.forEach(function(block, index) {
-      hljs.highlightBlock(block);
-    });
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
   });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
 </script>
 
-  </body>
-</html>
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
 
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85Node"><span class="nav-number">1.1.</span> <span class="nav-text">1.安装Node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85Sublime-text"><span class="nav-number">1.2.</span> <span class="nav-text">2.安装Sublime text</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%B8%8B%E8%BD%BDGit"><span class="nav-number">1.3.</span> <span class="nav-text">3.下载Git</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AEGit"><span class="nav-number">1.3.1.</span> <span class="nav-text">基本配置Git</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Git%E9%93%BE%E6%8E%A5%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%EF%BC%88%E5%90%8E%E7%BB%AD%E4%BC%9A%E4%BD%BF%E7%94%A8%E5%88%B0%EF%BC%89"><span class="nav-number">1.3.2.</span> <span class="nav-text">使用Git链接远程仓库（后续会使用到）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%88%9B%E5%BB%BAGitHub%E4%BB%93%E5%BA%93"><span class="nav-number">1.4.</span> <span class="nav-text">4.创建GitHub仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E9%85%8D%E7%BD%AE%E5%B9%B6%E4%BD%BF%E7%94%A8Hexo"><span class="nav-number">1.5.</span> <span class="nav-text">5.配置并使用Hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GithubPages-404%E9%97%AE%E9%A2%98"><span class="nav-number">1.6.</span> <span class="nav-text">GithubPages 404问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81github-%E4%BB%93%E5%BA%93%E5%90%8D%E7%A7%B0%E4%B8%8D%E5%8C%B9%E9%85%8D"><span class="nav-number">1.6.1.</span> <span class="nav-text">1、github 仓库名称不匹配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E9%94%99%E8%AF%AF"><span class="nav-number">1.6.2.</span> <span class="nav-text">2、配置文件错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E5%88%86%E6%94%AF%E9%94%99%E8%AF%AF"><span class="nav-number">1.6.3.</span> <span class="nav-text">3、分支错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81hexo-%E4%BE%9D%E8%B5%96%E4%B8%8D%E5%85%A8"><span class="nav-number">1.6.4.</span> <span class="nav-text">4、hexo 依赖不全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E7%89%88%E6%9C%AC%E4%B8%8D%E5%8C%B9%E9%85%8D%E9%97%AE%E9%A2%98%EF%BC%88node%E4%B8%8Ehexo%EF%BC%89"><span class="nav-number">1.6.5.</span> <span class="nav-text">5.版本不匹配问题（node与hexo）</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E%EF%BC%9A%E8%BF%99%E4%B8%AA%E8%BF%87%E7%A8%8B%E5%B9%B6%E4%B8%8D%E6%98%AF%E4%B8%80%E5%B8%86%E9%A3%8E%E9%A1%BA%E7%9A%84%EF%BC%8C%E5%BE%88%E5%A4%9A%E6%97%B6%E5%80%99%E7%94%9A%E8%87%B3%E8%AE%A9%E6%88%91%E7%97%9B%E8%8B%A6%EF%BC%8C%E4%BD%86%E6%9C%80%E5%90%8E%E6%88%91%E5%9D%9A%E6%8C%81%E4%B8%8B%E6%9D%A5%E4%BA%86%EF%BC%8C%E7%8E%B0%E5%9C%A8%E6%83%B3%E6%83%B3%E5%B0%BD%E7%AE%A1%E7%97%9B%E8%8B%A6%EF%BC%8C%E4%BD%86%E6%98%AF%E6%88%90%E5%8A%9F%E4%BA%86%EF%BC%8C%E4%BC%BC%E4%B9%8E%E8%BF%98%E4%B8%8D%E9%94%99%E3%80%82"><span class="nav-number">1.6.5.0.1.</span> <span class="nav-text">写在最后：这个过程并不是一帆风顺的，很多时候甚至让我痛苦，但最后我坚持下来了，现在想想尽管痛苦，但是成功了，似乎还不错。</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Dream"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Dream</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dream</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
