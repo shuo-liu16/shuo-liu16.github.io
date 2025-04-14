@@ -4,6 +4,29 @@
   
     
     <entry>
+      <title>WSL2 镜像模式网络配置指南</title>
+      <link href="/2025/04/14/WSL2%E9%95%9C%E5%83%8F%E6%A8%A1%E5%BC%8F%E7%BD%91%E7%BB%9C/"/>
+      <url>/2025/04/14/WSL2%E9%95%9C%E5%83%8F%E6%A8%A1%E5%BC%8F%E7%BD%91%E7%BB%9C/</url>
+      
+        <content type="html"><![CDATA[<p>当在 WSL2 环境中使用 <code>nvm</code> 等工具时，常会遇到网络访问限制问题（被墙了）。通过配置镜像模式网络，可使 WSL2 直接继承 Windows 宿主机的 VPN 网络环境，实现无缝网络访问。</p><span id="more"></span><h2 id="配置步骤"><a href="#配置步骤" class="headerlink" title="配置步骤"></a>配置步骤</h2><h3 id="1-升级-WSL-内核版本"><a href="#1-升级-WSL-内核版本" class="headerlink" title="1. 升级 WSL 内核版本"></a>1. 升级 WSL 内核版本</h3><p>在 <strong>Windows PowerShell</strong> 中以管理员身份执行：</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 更新到预览版内核（需Windows 11 22H2及以上）</span></span><br><span class="line">wsl <span class="literal">--update</span> <span class="literal">--pre-release</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证版本（要求 0.67.6+）</span></span><br><span class="line">wsl <span class="literal">--version</span></span><br></pre></td></tr></table></figure><h3 id="2-创建-wslconfig-系统级配置文件"><a href="#2-创建-wslconfig-系统级配置文件" class="headerlink" title="2. 创建 .wslconfig 系统级配置文件"></a>2. 创建 .wslconfig 系统级配置文件</h3><p>在 C:\Users[用户名] 目录下新建 .wslconfig 文件，内容如下：</p><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[wsl2]</span></span><br><span class="line"><span class="attr">nestedVirtualization</span>=<span class="literal">true</span>    <span class="comment">; 启用嵌套虚拟化</span></span><br><span class="line"><span class="attr">ipv6</span>=<span class="literal">true</span>                    <span class="comment">; 启用IPv6支持</span></span><br><span class="line"></span><br><span class="line"><span class="section">[experimental]</span></span><br><span class="line"><span class="attr">autoMemoryReclaim</span>=gradual    <span class="comment">; 渐进式内存回收</span></span><br><span class="line"><span class="attr">networkingMode</span>=mirrored      <span class="comment">; 核心配置：启用镜像网络模式</span></span><br><span class="line"><span class="attr">dnsTunneling</span>=<span class="literal">true</span>            <span class="comment">; 强制通过Windows DNS解析</span></span><br><span class="line"><span class="attr">firewall</span>=<span class="literal">true</span>                <span class="comment">; 继承Windows防火墙规则</span></span><br><span class="line"><span class="attr">autoProxy</span>=<span class="literal">true</span>               <span class="comment">; 自动同步系统代理设置</span></span><br></pre></td></tr></table></figure><h3 id="3-重启-WSL-子系统"><a href="#3-重启-WSL-子系统" class="headerlink" title="3. 重启 WSL 子系统"></a>3. 重启 WSL 子系统</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 完全关闭WSL实例</span></span><br><span class="line">wsl <span class="literal">--shutdown</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新启动默认发行版（根据实际情况替换发行版名称）</span></span><br><span class="line">wsl <span class="literal">-d</span> Ubuntu<span class="literal">-22</span>.<span class="number">04</span></span><br></pre></td></tr></table></figure><p>⚠️ 注意事项：镜像模式需要 Windows 11 Build 22000 及以上版本支持。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> wsl </tag>
+            
+            <tag> 网络配置 </tag>
+            
+            <tag> 代理设置 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>单例模式</title>
       <link href="/2025/02/20/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/"/>
       <url>/2025/02/20/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</url>
