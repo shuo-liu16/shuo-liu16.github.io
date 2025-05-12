@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="命令模式与宏命令的关系可以概括为「整体与部分」的组合关系，具体来说：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="命令模式与宏命令之间的联系">
+<meta property="og:url" content="https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/index.html">
+<meta property="og:site_name" content="Dream&#39;s Profile">
+<meta property="og:description" content="命令模式与宏命令的关系可以概括为「整体与部分」的组合关系，具体来说：">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-05-12T15:16:52.000Z">
+<meta property="article:modified_time" content="2025-05-12T15:43:57.317Z">
+<meta property="article:author" content="shuo-liu">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>命令模式与宏命令之间的联系</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/shuo-liu16">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/resume/Shuo_Liu_s_resume__chinese1_.pdf">Resume</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/05/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%A6%82%E8%A7%88/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&text=命令模式与宏命令之间的联系"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&title=命令模式与宏命令之间的联系"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&is_video=false&description=命令模式与宏命令之间的联系"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=命令模式与宏命令之间的联系&body=Check out this article: https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&title=命令模式与宏命令之间的联系"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&title=命令模式与宏命令之间的联系"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&title=命令模式与宏命令之间的联系"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&title=命令模式与宏命令之间的联系"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&name=命令模式与宏命令之间的联系&description=&lt;p&gt;命令模式与宏命令的关系可以概括为&lt;strong&gt;「整体与部分」&lt;/strong&gt;的组合关系，具体来说：&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&t=命令模式与宏命令之间的联系"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B1%82%E7%BA%A7%E5%85%B3%E7%B3%BB"><span class="toc-number">1.</span> <span class="toc-text">1. 层级关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AE%BE%E8%AE%A1%E6%84%8F%E5%9B%BE%E5%AF%B9%E6%AF%94"><span class="toc-number">2.</span> <span class="toc-text">2. 设计意图对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BB%93%E6%9E%84%E5%85%B3%E7%B3%BB%E5%9B%BE%E8%A7%A3"><span class="toc-number">3.</span> <span class="toc-text">3. 结构关系图解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%85%B3%E9%94%AE%E5%8D%8F%E4%BD%9C%E6%96%B9%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">4. 关键协作方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%AE%8F%E5%91%BD%E4%BB%A4%E5%A6%82%E4%BD%95%E6%89%A9%E5%B1%95%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.1.</span> <span class="toc-text">(1) 宏命令如何扩展命令模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%85%B8%E5%9E%8B%E4%BA%A4%E4%BA%92%E6%B5%81%E7%A8%8B"><span class="toc-number">4.2.</span> <span class="toc-text">(2) 典型交互流程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B%EF%BC%9A%E6%94%AF%E6%8C%81%E6%92%A4%E9%94%80%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%93%8D%E4%BD%9C"><span class="toc-number">5.</span> <span class="toc-text">5. 实战案例：支持撤销的事务操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E9%9C%80%E6%B1%82"><span class="toc-number">5.1.</span> <span class="toc-text">场景需求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E8%A6%81%E7%82%B9"><span class="toc-number">5.2.</span> <span class="toc-text">代码实现要点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E4%BA%8C%E8%80%85%E7%9A%84%E6%9C%AC%E8%B4%A8%E8%81%94%E7%B3%BB"><span class="toc-number">6.</span> <span class="toc-text">6. 二者的本质联系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A%E9%80%89%E6%8B%A9%E4%BD%BF%E7%94%A8%E5%AE%8F%E5%91%BD%E4%BB%A4%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="toc-number">7.</span> <span class="toc-text">总结：选择使用宏命令的时机</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        命令模式与宏命令之间的联系
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">shuo-liu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-05-12T15:16:52.000Z" class="dt-published" itemprop="datePublished">2025-05-12</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>命令模式与宏命令的关系可以概括为<strong>「整体与部分」</strong>的组合关系，具体来说：</p>
+<span id="more"></span>
+
+<hr>
+<h3 id="1-层级关系"><a href="#1-层级关系" class="headerlink" title="1. 层级关系"></a><strong>1. 层级关系</strong></h3><ul>
+<li><strong>命令模式</strong> 是基础设计模式，提供<strong>单个命令的封装机制</strong>。</li>
+<li><strong>宏命令</strong> 是命令模式的<strong>扩展应用</strong>，通过<strong>组合多个命令</strong>形成复合命令，本质上是一个<strong>组合模式（Composite Pattern）</strong>与命令模式的结合。</li>
+</ul>
+<hr>
+<h3 id="2-设计意图对比"><a href="#2-设计意图对比" class="headerlink" title="2. 设计意图对比"></a><strong>2. 设计意图对比</strong></h3><table>
+<thead>
+<tr>
+<th></th>
+<th>命令模式</th>
+<th>宏命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>核心目标</strong></td>
+<td>解耦请求发送者与执行者</td>
+<td>批量处理多个命令</td>
+</tr>
+<tr>
+<td><strong>关注点</strong></td>
+<td>单个命令的生命周期管理</td>
+<td>命令集合的编排与协同执行</td>
+</tr>
+<tr>
+<td><strong>典型应用</strong></td>
+<td>按钮点击操作、撤销&#x2F;重做单个步骤</td>
+<td>一键执行复杂操作流、事务处理</td>
+</tr>
+<tr>
+<td><strong>扩展性体现</strong></td>
+<td>支持不同的具体命令实现</td>
+<td>支持动态增删子命令</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="3-结构关系图解"><a href="#3-结构关系图解" class="headerlink" title="3. 结构关系图解"></a><strong>3. 结构关系图解</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">          ┌───────────────┐</span><br><span class="line">          │   Command     │</span><br><span class="line">          │ (接口/抽象类)   │</span><br><span class="line">          └──────┬────────┘</span><br><span class="line">                 △</span><br><span class="line">         ┌───────┴───────┐</span><br><span class="line">         │               │</span><br><span class="line">┌─────────────────┐  ┌─────────────────┐</span><br><span class="line">│ ConcreteCommand │  │   MacroCommand  │</span><br><span class="line">│  (具体单个命令)   │  │  (复合命令容器)   │</span><br><span class="line">└─────────────────┘  └───────┬─────────┘</span><br><span class="line">                              △</span><br><span class="line">                      ┌───────┴───────┐</span><br><span class="line">                      │               │</span><br><span class="line">               ┌─────────────┐  ┌─────────────┐</span><br><span class="line">               │ Command A   │  │ Command B   │</span><br><span class="line">               └─────────────┘  └─────────────┘</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="4-关键协作方式"><a href="#4-关键协作方式" class="headerlink" title="4. 关键协作方式"></a><strong>4. 关键协作方式</strong></h3><h4 id="1-宏命令如何扩展命令模式"><a href="#1-宏命令如何扩展命令模式" class="headerlink" title="(1) 宏命令如何扩展命令模式"></a><strong>(1) 宏命令如何扩展命令模式</strong></h4><ul>
+<li><strong>组合模式的应用</strong>：宏命令自身实现<code>Command</code>接口，同时内部维护一个<code>Command</code>集合</li>
+<li><strong>透明性处理</strong>：对调用者而言，执行宏命令与执行普通命令无感知差异</li>
+<li><strong>递归执行</strong>：宏命令的<code>execute()</code>方法遍历调用所有子命令的<code>execute()</code></li>
+</ul>
+<h4 id="2-典型交互流程"><a href="#2-典型交互流程" class="headerlink" title="(2) 典型交互流程"></a><strong>(2) 典型交互流程</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[调用者] → 触发宏命令.execute()</span><br><span class="line">           │</span><br><span class="line">           ▼</span><br><span class="line">宏命令遍历子命令集合 → 依次执行  command1.execute()</span><br><span class="line">                                command2.execute()</span><br><span class="line">                                    command3.execute()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5-实战案例：支持撤销的事务操作"><a href="#5-实战案例：支持撤销的事务操作" class="headerlink" title="5. 实战案例：支持撤销的事务操作"></a><strong>5. 实战案例：支持撤销的事务操作</strong></h3><h4 id="场景需求"><a href="#场景需求" class="headerlink" title="场景需求"></a><strong>场景需求</strong></h4><ul>
+<li>用户执行「批量删除文件」操作</li>
+<li>需要支持整体撤销（回滚所有删除操作）</li>
+<li>若任意子命令失败，自动回滚已执行的命令</li>
+</ul>
+<h4 id="代码实现要点"><a href="#代码实现要点" class="headerlink" title="代码实现要点"></a><strong>代码实现要点</strong></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 增强的宏命令（支持事务回滚）</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TransactionMacroCommand</span> <span class="keyword">implements</span> <span class="title class_">Command</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Command&gt; commands = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">private</span> Stack&lt;Command&gt; executedCommands = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addCommand</span><span class="params">(Command cmd)</span> &#123;</span><br><span class="line">        commands.add(cmd);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">execute</span><span class="params">()</span> &#123;</span><br><span class="line">        executedCommands.clear();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (Command cmd : commands) &#123;</span><br><span class="line">                cmd.execute();</span><br><span class="line">                executedCommands.push(cmd); <span class="comment">// 记录已执行的命令</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            undoAll(); <span class="comment">// 出现异常时回滚</span></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">undoAll</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (!executedCommands.isEmpty()) &#123;</span><br><span class="line">            <span class="type">Command</span> <span class="variable">cmd</span> <span class="operator">=</span> executedCommands.pop();</span><br><span class="line">            <span class="keyword">if</span> (cmd <span class="keyword">instanceof</span> UndoableCommand) &#123;</span><br><span class="line">                ((UndoableCommand) cmd).undo();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 可撤销的命令接口</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">UndoableCommand</span> <span class="keyword">extends</span> <span class="title class_">Command</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">undo</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体可撤销命令示例</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DeleteFileCommand</span> <span class="keyword">implements</span> <span class="title class_">UndoableCommand</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> File file;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="variable">backupExists</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">execute</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (file.exists()) &#123;</span><br><span class="line">            createBackup(); <span class="comment">// 创建备份以便撤销</span></span><br><span class="line">            file.delete();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">undo</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (backupExists) restoreFromBackup(); <span class="comment">// 恢复文件</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="6-二者的本质联系"><a href="#6-二者的本质联系" class="headerlink" title="6. 二者的本质联系"></a><strong>6. 二者的本质联系</strong></h3><ul>
+<li><strong>相同基因</strong>：宏命令完全遵循命令模式的核心思想（将请求封装为对象）</li>
+<li><strong>能力增强</strong>：宏命令通过组合模式赋予了命令模式<strong>批量操作</strong>和<strong>嵌套执行</strong>的能力</li>
+<li><strong>设计演进</strong>：<br><code>单一命令</code> → <code>可撤销命令</code> → <code>宏命令</code> 体现了设计模式的<strong>渐进式抽象过程</strong></li>
+</ul>
+<hr>
+<h3 id="总结：选择使用宏命令的时机"><a href="#总结：选择使用宏命令的时机" class="headerlink" title="总结：选择使用宏命令的时机"></a><strong>总结：选择使用宏命令的时机</strong></h3><p>当你的系统出现以下特征时，应考虑在命令模式基础上引入宏命令：</p>
+<ol>
+<li>需要将<strong>多个关联操作</strong>原子化执行（如数据库事务）</li>
+<li>存在<strong>重复操作序列</strong>需要抽象（如自动化脚本）</li>
+<li>要求实现<strong>层级撤销</strong>（如 Photoshop 的批量操作回退）</li>
+<li>需要<strong>动态组装操作流</strong>（如工作流引擎）</li>
+</ol>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/shuo-liu16">Projects</a></li>
+        
+          <li><a href="/about/resume/Shuo_Liu_s_resume__chinese1_.pdf">Resume</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B1%82%E7%BA%A7%E5%85%B3%E7%B3%BB"><span class="toc-number">1.</span> <span class="toc-text">1. 层级关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AE%BE%E8%AE%A1%E6%84%8F%E5%9B%BE%E5%AF%B9%E6%AF%94"><span class="toc-number">2.</span> <span class="toc-text">2. 设计意图对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BB%93%E6%9E%84%E5%85%B3%E7%B3%BB%E5%9B%BE%E8%A7%A3"><span class="toc-number">3.</span> <span class="toc-text">3. 结构关系图解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%85%B3%E9%94%AE%E5%8D%8F%E4%BD%9C%E6%96%B9%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">4. 关键协作方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%AE%8F%E5%91%BD%E4%BB%A4%E5%A6%82%E4%BD%95%E6%89%A9%E5%B1%95%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.1.</span> <span class="toc-text">(1) 宏命令如何扩展命令模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%85%B8%E5%9E%8B%E4%BA%A4%E4%BA%92%E6%B5%81%E7%A8%8B"><span class="toc-number">4.2.</span> <span class="toc-text">(2) 典型交互流程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B%EF%BC%9A%E6%94%AF%E6%8C%81%E6%92%A4%E9%94%80%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%93%8D%E4%BD%9C"><span class="toc-number">5.</span> <span class="toc-text">5. 实战案例：支持撤销的事务操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E9%9C%80%E6%B1%82"><span class="toc-number">5.1.</span> <span class="toc-text">场景需求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E8%A6%81%E7%82%B9"><span class="toc-number">5.2.</span> <span class="toc-text">代码实现要点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E4%BA%8C%E8%80%85%E7%9A%84%E6%9C%AC%E8%B4%A8%E8%81%94%E7%B3%BB"><span class="toc-number">6.</span> <span class="toc-text">6. 二者的本质联系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A%E9%80%89%E6%8B%A9%E4%BD%BF%E7%94%A8%E5%AE%8F%E5%91%BD%E4%BB%A4%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="toc-number">7.</span> <span class="toc-text">总结：选择使用宏命令的时机</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&text=命令模式与宏命令之间的联系"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&title=命令模式与宏命令之间的联系"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&is_video=false&description=命令模式与宏命令之间的联系"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=命令模式与宏命令之间的联系&body=Check out this article: https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&title=命令模式与宏命令之间的联系"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&title=命令模式与宏命令之间的联系"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&title=命令模式与宏命令之间的联系"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&title=命令模式与宏命令之间的联系"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&name=命令模式与宏命令之间的联系&description=&lt;p&gt;命令模式与宏命令的关系可以概括为&lt;strong&gt;「整体与部分」&lt;/strong&gt;的组合关系，具体来说：&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shuo-liu16.github.io/2025/05/12/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AE%8F%E5%91%BD%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB/&t=命令模式与宏命令之间的联系"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    shuo-liu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/shuo-liu16">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/resume/Shuo_Liu_s_resume__chinese1_.pdf">Resume</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
