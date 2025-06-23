@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="1. Servlet 是什么：处理 HTTP 请求的 Java 类，是 JavaWeb 的核心组件。  作用：    接收请求（GET&#x2F;POST）   处理业务逻辑（如验证登录）   返回响应（重定向、转发到 JSP）   生命周期：    初始化：首次访问时调用 init()   服务：每次请求调用 service() → 分发给 doGet() 或 doPost()   销毁：服">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaWeb关键概念解析">
+<meta property="og:url" content="https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="Dream&#39;s Profile">
+<meta property="og:description" content="1. Servlet 是什么：处理 HTTP 请求的 Java 类，是 JavaWeb 的核心组件。  作用：    接收请求（GET&#x2F;POST）   处理业务逻辑（如验证登录）   返回响应（重定向、转发到 JSP）   生命周期：    初始化：首次访问时调用 init()   服务：每次请求调用 service() → 分发给 doGet() 或 doPost()   销毁：服">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-05-25T07:42:12.000Z">
+<meta property="article:modified_time" content="2025-05-25T07:42:56.893Z">
+<meta property="article:author" content="shuo-liu">
+<meta property="article:tag" content="JavaWeb">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>JavaWeb关键概念解析</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/shuo-liu16">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/resume/Shuo_Liu_s_resume__chinese1_.pdf">Resume</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/05/25/Servlet%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/05/16/%E3%80%8A%E9%AD%81%E6%8B%94%E3%80%8B%E7%BB%8F%E5%85%B8%E8%AF%AD%E5%BD%95/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&text=JavaWeb关键概念解析"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&title=JavaWeb关键概念解析"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&is_video=false&description=JavaWeb关键概念解析"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=JavaWeb关键概念解析&body=Check out this article: https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&title=JavaWeb关键概念解析"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&title=JavaWeb关键概念解析"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&title=JavaWeb关键概念解析"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&title=JavaWeb关键概念解析"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&name=JavaWeb关键概念解析&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&t=JavaWeb关键概念解析"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Servlet"><span class="toc-number">1.</span> <span class="toc-text">1. Servlet</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-JSP%EF%BC%88JavaServer-Pages%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">2. JSP（JavaServer Pages）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Filter%EF%BC%88%E8%BF%87%E6%BB%A4%E5%99%A8%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">3. Filter（过滤器）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Listener%EF%BC%88%E7%9B%91%E5%90%AC%E5%99%A8%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">4. Listener（监听器）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-MVC-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-number">5.</span> <span class="toc-text">5. MVC 设计模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86%EF%BC%88Session-Cookie%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">6. 会话管理（Session &amp; Cookie）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-JDBC%EF%BC%88Java-Database-Connectivity%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">7. JDBC（Java Database Connectivity）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-Tomcat%EF%BC%88Web-%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%89"><span class="toc-number">8.</span> <span class="toc-text">8. Tomcat（Web 服务器）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9AJavaWeb-%E6%8A%80%E6%9C%AF%E6%A0%88"><span class="toc-number"></span> <span class="toc-text">总结：JavaWeb 技术栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E5%BB%BA%E8%AE%AE"><span class="toc-number"></span> <span class="toc-text">学习建议</span></a>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        JavaWeb关键概念解析
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">shuo-liu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-05-25T07:42:12.000Z" class="dt-published" itemprop="datePublished">2025-05-25</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/JavaWeb/" rel="tag">JavaWeb</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <span id="more"></span>
+
+<h4 id="1-Servlet"><a href="#1-Servlet" class="headerlink" title="1. Servlet"></a><strong>1. Servlet</strong></h4><ul>
+<li><p><strong>是什么</strong>：处理 HTTP 请求的 Java 类，是 JavaWeb 的<strong>核心组件</strong>。</p>
+</li>
+<li><p><strong>作用</strong>：  </p>
+<ul>
+<li>接收请求（GET&#x2F;POST）  </li>
+<li>处理业务逻辑（如验证登录）  </li>
+<li>返回响应（重定向、转发到 JSP）</li>
+</ul>
+</li>
+<li><p><strong>生命周期</strong>：  </p>
+<ol>
+<li><strong>初始化</strong>：首次访问时调用 <code>init()</code>  </li>
+<li><strong>服务</strong>：每次请求调用 <code>service()</code> → 分发给 <code>doGet()</code> 或 <code>doPost()</code>  </li>
+<li><strong>销毁</strong>：服务器关闭时调用 <code>destroy()</code></li>
+</ol>
+</li>
+<li><p><strong>示例</strong>：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(&quot;/hello&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> &#123;</span><br><span class="line">        resp.getWriter().write(<span class="string">&quot;Hello World!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h4 id="2-JSP（JavaServer-Pages）"><a href="#2-JSP（JavaServer-Pages）" class="headerlink" title="2. JSP（JavaServer Pages）"></a><strong>2. JSP（JavaServer Pages）</strong></h4><ul>
+<li><p><strong>是什么</strong>：动态生成 HTML 页面的技术，本质是<strong>被编译为 Servlet</strong>。</p>
+</li>
+<li><p><strong>特点</strong>：  </p>
+<ul>
+<li>支持嵌入 Java 代码（<code>&lt;% ... %&gt;</code>）  </li>
+<li>使用 <strong>EL 表达式</strong> <code>$&#123;&#125;</code> 和 <strong>JSTL 标签</strong> 简化页面逻辑</li>
+</ul>
+</li>
+<li><p><strong>执行流程</strong>：<br><code>JSP文件</code> → 转换为 <code>Servlet.java</code> → 编译为 <code>.class</code> → 处理请求  </p>
+</li>
+<li><p><strong>示例</strong>：  </p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page contentType=<span class="string">&quot;text/html;charset=UTF-8&quot;</span> %&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h1&gt;欢迎, $&#123;user.name&#125;!&lt;/h1&gt;  &lt;!-- EL表达式读取数据 --&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h4 id="3-Filter（过滤器）"><a href="#3-Filter（过滤器）" class="headerlink" title="3. Filter（过滤器）"></a><strong>3. Filter（过滤器）</strong></h4><ul>
+<li><p><strong>是什么</strong>：拦截请求&#x2F;响应的组件，用于<strong>预处理</strong>或<strong>后处理</strong>。</p>
+</li>
+<li><p><strong>典型用途</strong>：  </p>
+<ul>
+<li>统一设置编码（解决中文乱码）  </li>
+<li>记录请求日志  </li>
+<li>权限验证（如检查用户是否登录）</li>
+</ul>
+</li>
+<li><p><strong>执行顺序</strong>：按 <code>web.xml</code> 配置顺序或类名顺序执行。  </p>
+</li>
+<li><p><strong>示例</strong>：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebFilter(&quot;/*&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">EncodingFilter</span> <span class="keyword">implements</span> <span class="title class_">Filter</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doFilter</span><span class="params">(ServletRequest req, ServletResponse res, FilterChain chain)</span> &#123;</span><br><span class="line">        req.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">        chain.doFilter(req, res);  <span class="comment">// 放行请求</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h4 id="4-Listener（监听器）"><a href="#4-Listener（监听器）" class="headerlink" title="4. Listener（监听器）"></a><strong>4. Listener（监听器）</strong></h4><ul>
+<li><p><strong>是什么</strong>：监听 Web 应用中的事件（如应用启动、会话创建）。  </p>
+</li>
+<li><p><strong>常用监听器</strong>：  </p>
+<ul>
+<li><code>ServletContextListener</code>：监听应用启动&#x2F;关闭  </li>
+<li><code>HttpSessionListener</code>：统计在线用户数  </li>
+<li><code>ServletRequestListener</code>：监控请求生命周期</li>
+</ul>
+</li>
+<li><p><strong>示例</strong>：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebListener</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppListener</span> <span class="keyword">implements</span> <span class="title class_">ServletContextListener</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">contextInitialized</span><span class="params">(ServletContextEvent sce)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;应用启动了！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h4 id="5-MVC-设计模式"><a href="#5-MVC-设计模式" class="headerlink" title="5. MVC 设计模式"></a><strong>5. MVC 设计模式</strong></h4><ul>
+<li><strong>核心思想</strong>：  <ul>
+<li><strong>Model（模型）</strong>：数据与业务逻辑（如 JavaBean、Service 类）  </li>
+<li><strong>View（视图）</strong>：展示数据（如 JSP、HTML）  </li>
+<li><strong>Controller（控制器）</strong>：接收请求并协调 Model 和 View（如 Servlet）</li>
+</ul>
+</li>
+<li><strong>优势</strong>：代码分层，易于维护和扩展。  </li>
+<li><strong>流程示例</strong>：  <ol>
+<li>用户访问 <code>/login</code> → <code>LoginServlet</code>（Controller）处理请求  </li>
+<li>Servlet 调用 <code>UserService</code>（Model）验证用户名密码  </li>
+<li>返回结果到 <code>login-result.jsp</code>（View）显示</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h4 id="6-会话管理（Session-Cookie）"><a href="#6-会话管理（Session-Cookie）" class="headerlink" title="6. 会话管理（Session &amp; Cookie）"></a><strong>6. 会话管理（Session &amp; Cookie）</strong></h4><ul>
+<li><p><strong>Session</strong>：  </p>
+<ul>
+<li>服务器端存储用户会话数据（如 <code>HttpSession</code>）  </li>
+<li>默认通过 <strong>JSESSIONID Cookie</strong> 关联客户端</li>
+</ul>
+</li>
+<li><p><strong>Cookie</strong>：  </p>
+<ul>
+<li>客户端存储少量数据（如用户偏好设置）  </li>
+<li>大小限制约 4KB</li>
+</ul>
+</li>
+<li><p><strong>示例</strong>：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在 Servlet 中创建 Session</span></span><br><span class="line"><span class="type">HttpSession</span> <span class="variable">session</span> <span class="operator">=</span> request.getSession();</span><br><span class="line">session.setAttribute(<span class="string">&quot;user&quot;</span>, user);  <span class="comment">// 存储用户对象</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h4 id="7-JDBC（Java-Database-Connectivity）"><a href="#7-JDBC（Java-Database-Connectivity）" class="headerlink" title="7. JDBC（Java Database Connectivity）"></a><strong>7. JDBC（Java Database Connectivity）</strong></h4><ul>
+<li><strong>作用</strong>：连接数据库并执行 SQL。  </li>
+<li><strong>核心步骤</strong>：  <ol>
+<li>加载驱动 <code>Class.forName(&quot;com.mysql.cj.jdbc.Driver&quot;);</code>  </li>
+<li>建立连接 <code>Connection conn = DriverManager.getConnection(url, user, pwd);</code>  </li>
+<li>执行 SQL <code>Statement stmt = conn.createStatement();</code>  </li>
+<li>处理结果 <code>ResultSet rs = stmt.executeQuery(&quot;SELECT * FROM users&quot;);</code></li>
+</ol>
+</li>
+<li><strong>优化</strong>：使用连接池（如 HikariCP）提升性能。</li>
+</ul>
+<hr>
+<h4 id="8-Tomcat（Web-服务器）"><a href="#8-Tomcat（Web-服务器）" class="headerlink" title="8. Tomcat（Web 服务器）"></a><strong>8. Tomcat（Web 服务器）</strong></h4><ul>
+<li><strong>是什么</strong>：轻量级的 JavaWeb 应用服务器，用于部署和运行 Servlet&#x2F;JSP。  </li>
+<li><strong>关键目录</strong>：  <ul>
+<li><code>webapps</code>：存放 WAR 包或项目文件夹  </li>
+<li><code>logs</code>：查看运行日志（如 <code>catalina.out</code>）</li>
+</ul>
+</li>
+<li><strong>部署方式</strong>：  <ul>
+<li>直接将项目文件夹复制到 <code>webapps</code>  </li>
+<li>使用 Maven 打包为 WAR 文件自动部署</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="总结：JavaWeb-技术栈"><a href="#总结：JavaWeb-技术栈" class="headerlink" title="总结：JavaWeb 技术栈"></a><strong>总结：JavaWeb 技术栈</strong></h3><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>作用</th>
+<th>常见应用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Servlet</strong></td>
+<td>处理 HTTP 请求</td>
+<td>用户登录、表单提交</td>
+</tr>
+<tr>
+<td><strong>JSP</strong></td>
+<td>动态生成页面</td>
+<td>显示用户数据、商品列表</td>
+</tr>
+<tr>
+<td><strong>Filter</strong></td>
+<td>请求预处理&#x2F;后处理</td>
+<td>编码设置、权限控制</td>
+</tr>
+<tr>
+<td><strong>Listener</strong></td>
+<td>监听应用事件</td>
+<td>统计在线人数、初始化资源</td>
+</tr>
+<tr>
+<td><strong>JDBC</strong></td>
+<td>操作数据库</td>
+<td>用户注册、订单查询</td>
+</tr>
+<tr>
+<td><strong>MVC</strong></td>
+<td>分层架构设计</td>
+<td>大型项目开发</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="学习建议"><a href="#学习建议" class="headerlink" title="学习建议"></a><strong>学习建议</strong></h3><ol>
+<li><strong>动手实践</strong>：从简单的登录功能开始，逐步整合各组件。  </li>
+<li><strong>调试工具</strong>：使用 Postman 测试 API，浏览器开发者工具查看请求&#x2F;响应。  </li>
+<li><strong>框架过渡</strong>：掌握基础后学习 Spring Boot 简化开发。</li>
+</ol>
+<p>理解这些核心概念后，你将能独立开发基础 JavaWeb 应用，并为学习企业级框架（如 Spring）奠定坚实基础！</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/shuo-liu16">Projects</a></li>
+        
+          <li><a href="/about/resume/Shuo_Liu_s_resume__chinese1_.pdf">Resume</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Servlet"><span class="toc-number">1.</span> <span class="toc-text">1. Servlet</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-JSP%EF%BC%88JavaServer-Pages%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">2. JSP（JavaServer Pages）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Filter%EF%BC%88%E8%BF%87%E6%BB%A4%E5%99%A8%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">3. Filter（过滤器）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Listener%EF%BC%88%E7%9B%91%E5%90%AC%E5%99%A8%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">4. Listener（监听器）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-MVC-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-number">5.</span> <span class="toc-text">5. MVC 设计模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86%EF%BC%88Session-Cookie%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">6. 会话管理（Session &amp; Cookie）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-JDBC%EF%BC%88Java-Database-Connectivity%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">7. JDBC（Java Database Connectivity）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-Tomcat%EF%BC%88Web-%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%89"><span class="toc-number">8.</span> <span class="toc-text">8. Tomcat（Web 服务器）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9AJavaWeb-%E6%8A%80%E6%9C%AF%E6%A0%88"><span class="toc-number"></span> <span class="toc-text">总结：JavaWeb 技术栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E5%BB%BA%E8%AE%AE"><span class="toc-number"></span> <span class="toc-text">学习建议</span></a>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&text=JavaWeb关键概念解析"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&title=JavaWeb关键概念解析"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&is_video=false&description=JavaWeb关键概念解析"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=JavaWeb关键概念解析&body=Check out this article: https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&title=JavaWeb关键概念解析"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&title=JavaWeb关键概念解析"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&title=JavaWeb关键概念解析"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&title=JavaWeb关键概念解析"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&name=JavaWeb关键概念解析&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shuo-liu16.github.io/2025/05/25/JavaWeb%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/&t=JavaWeb关键概念解析"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    shuo-liu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/shuo-liu16">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/resume/Shuo_Liu_s_resume__chinese1_.pdf">Resume</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
