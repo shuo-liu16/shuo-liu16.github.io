@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Advanced Learning Algorithms第四周：神经网络（Neural Networks）——从直觉到实现1. 神经网络直觉 灵感来源：生物神经元简化模型。 能力：自动学习复杂特征，解决非线性问题（如需求预测、图像识别）。  2. 神经网络模型 **层 (Layer)**：输入层、隐藏层、输出层的堆叠。 **前向传播 (Forward Propagation)**：逐层计算激活值，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Advanced Learning Algorithms">
+<meta property="og:url" content="https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/index.html">
+<meta property="og:site_name" content="Dream&#39;s Profile">
+<meta property="og:description" content="Advanced Learning Algorithms第四周：神经网络（Neural Networks）——从直觉到实现1. 神经网络直觉 灵感来源：生物神经元简化模型。 能力：自动学习复杂特征，解决非线性问题（如需求预测、图像识别）。  2. 神经网络模型 **层 (Layer)**：输入层、隐藏层、输出层的堆叠。 **前向传播 (Forward Propagation)**：逐层计算激活值，">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-04-23T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-04-23T14:51:29.043Z">
+<meta property="article:author" content="shuo-liu">
+<meta property="article:tag" content="机器学习, 神经网络, 决策树, 集成学习">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Advanced Learning Algorithms</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/shuo-liu16">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/resume/Shuo_Liu_s_resume__chinese1_.pdf">Resume</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2026/04/23/Unsupervised-Learning/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&text=Advanced Learning Algorithms"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&title=Advanced Learning Algorithms"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&is_video=false&description=Advanced Learning Algorithms"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Advanced Learning Algorithms&body=Check out this article: https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&title=Advanced Learning Algorithms"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&title=Advanced Learning Algorithms"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&title=Advanced Learning Algorithms"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&title=Advanced Learning Algorithms"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&name=Advanced Learning Algorithms&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&t=Advanced Learning Algorithms"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Advanced-Learning-Algorithms"><span class="toc-number">1.</span> <span class="toc-text">Advanced Learning Algorithms</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E5%91%A8%EF%BC%9A%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88Neural-Networks%EF%BC%89%E2%80%94%E2%80%94%E4%BB%8E%E7%9B%B4%E8%A7%89%E5%88%B0%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.</span> <span class="toc-text">第四周：神经网络（Neural Networks）——从直觉到实现</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9B%B4%E8%A7%89"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 神经网络直觉</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 神经网络模型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E4%B8%A4%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-number">1.1.3.</span> <span class="toc-text">3. 两种实现方式</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E5%91%A8%EF%BC%9A%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%AE%AD%E7%BB%83%E4%B8%8E%E5%A4%9A%E5%88%86%E7%B1%BB"><span class="toc-number">1.2.</span> <span class="toc-text">第五周：神经网络训练与多分类</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83%E7%BB%86%E8%8A%82"><span class="toc-number">1.2.1.</span> <span class="toc-text">1. 模型训练细节</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%E9%80%89%E6%8B%A9"><span class="toc-number">1.2.2.</span> <span class="toc-text">2. 激活函数选择</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E5%A4%9A%E5%88%86%E7%B1%BB-Multiclass-Classification"><span class="toc-number">1.2.3.</span> <span class="toc-text">3. 多分类 (Multiclass Classification)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E9%AB%98%E7%BA%A7%E4%BC%98%E5%8C%96%E4%B8%8E%E5%B1%82%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.2.4.</span> <span class="toc-text">4. 高级优化与层类型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-number">1.2.5.</span> <span class="toc-text">5. 反向传播（可选）</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E5%91%A8%EF%BC%9A%E5%BA%94%E7%94%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%AE%9E%E8%B7%B5%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.3.</span> <span class="toc-text">第六周：应用机器学习的实践建议</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9"><span class="toc-number">1.3.1.</span> <span class="toc-text">1. 模型评估与选择</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%81%8F%E5%B7%AE%E4%B8%8E%E6%96%B9%E5%B7%AE%E7%9A%84%E5%A4%84%E7%90%86"><span class="toc-number">1.3.2.</span> <span class="toc-text">2. 偏差与方差的处理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E8%BF%AD%E4%BB%A3%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="toc-number">1.3.3.</span> <span class="toc-text">3. 迭代开发流程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E5%80%BE%E6%96%9C%E6%95%B0%E6%8D%AE%E9%9B%86%E5%A4%84%E7%90%86%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-number">1.3.4.</span> <span class="toc-text">4. 倾斜数据集处理（可选）</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E5%91%A8%EF%BC%9A%E5%86%B3%E7%AD%96%E6%A0%91%E4%B8%8E%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.4.</span> <span class="toc-text">第七周：决策树与集成学习</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E5%86%B3%E7%AD%96%E6%A0%91%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text">1. 决策树模型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%88%92%E5%88%86%E6%A0%87%E5%87%86"><span class="toc-number">1.4.2.</span> <span class="toc-text">2. 划分标准</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E6%A0%91%E9%9B%86%E6%88%90%E6%96%B9%E6%B3%95"><span class="toc-number">1.4.3.</span> <span class="toc-text">3. 树集成方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%97-%E6%95%B4%E4%BD%93%E7%9F%A5%E8%AF%86%E8%84%89%E7%BB%9C%EF%BC%88%E4%BB%8E%E7%BA%BF%E6%80%A7%E5%9F%BA%E7%A1%80%E5%88%B0%E6%A0%91%E4%B8%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">🔗 整体知识脉络（从线性基础到树与神经网络）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%A7%AD-%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE%E5%BA%94%E7%94%A8%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="toc-number">3.</span> <span class="toc-text">🧭 综合项目应用检查清单</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Advanced Learning Algorithms
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">shuo-liu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2026-04-23T02:00:00.000Z" class="dt-published" itemprop="datePublished">2026-04-23</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E5%86%B3%E7%AD%96%E6%A0%91-%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习, 神经网络, 决策树, 集成学习</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h3 id="Advanced-Learning-Algorithms"><a href="#Advanced-Learning-Algorithms" class="headerlink" title="Advanced Learning Algorithms"></a>Advanced Learning Algorithms</h3><h4 id="第四周：神经网络（Neural-Networks）——从直觉到实现"><a href="#第四周：神经网络（Neural-Networks）——从直觉到实现" class="headerlink" title="第四周：神经网络（Neural Networks）——从直觉到实现"></a>第四周：神经网络（Neural Networks）——从直觉到实现</h4><h5 id="1-神经网络直觉"><a href="#1-神经网络直觉" class="headerlink" title="1. 神经网络直觉"></a>1. 神经网络直觉</h5><ul>
+<li><strong>灵感来源</strong>：生物神经元简化模型。</li>
+<li><strong>能力</strong>：自动学习复杂特征，解决非线性问题（如需求预测、图像识别）。</li>
+</ul>
+<h5 id="2-神经网络模型"><a href="#2-神经网络模型" class="headerlink" title="2. 神经网络模型"></a>2. 神经网络模型</h5><ul>
+<li>**层 (Layer)**：输入层、隐藏层、输出层的堆叠。</li>
+<li>**前向传播 (Forward Propagation)**：逐层计算激活值，最终输出预测。</li>
+<li><strong>数学表达</strong>：<code>a[l] = g(W[l]·a[l-1] + b[l])</code>，其中 <code>g</code> 为激活函数（如 Sigmoid）。</li>
+<li><strong>架构演变</strong>：单层 → 多隐藏层（深度网络），层数越多能学习越抽象的特征。</li>
+</ul>
+<h5 id="3-两种实现方式"><a href="#3-两种实现方式" class="headerlink" title="3. 两种实现方式"></a>3. 两种实现方式</h5><ul>
+<li><p><strong>TensorFlow &#x2F; Keras</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">model = Sequential([</span><br><span class="line">    Dense(units=<span class="number">25</span>, activation=<span class="string">&#x27;sigmoid&#x27;</span>),</span><br><span class="line">    Dense(units=<span class="number">15</span>, activation=<span class="string">&#x27;sigmoid&#x27;</span>),</span><br><span class="line">    Dense(units=<span class="number">1</span>, activation=<span class="string">&#x27;sigmoid&#x27;</span>)</span><br><span class="line">])</span><br><span class="line">model.predict(X)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>从零实现（NumPy）</strong>：手动编写矩阵乘法与激活函数，加深对向量化理解。</p>
+</li>
+<li><p><strong>向量化（可选）</strong>：用矩阵运算替代显式 for 循环，利用并行计算加速。</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>项目应用提示</strong>：</p>
+<ul>
+<li>遇到线性回归&#x2F;逻辑回归误差依然很高时，尝试使用包含一两个隐藏层的神经网络。</li>
+<li>先用 TensorFlow 快速搭建原型，再根据需要手动实现关键部分以加深调试能力。</li>
+</ul>
+</blockquote>
+<hr>
+<h4 id="第五周：神经网络训练与多分类"><a href="#第五周：神经网络训练与多分类" class="headerlink" title="第五周：神经网络训练与多分类"></a>第五周：神经网络训练与多分类</h4><h5 id="1-模型训练细节"><a href="#1-模型训练细节" class="headerlink" title="1. 模型训练细节"></a>1. 模型训练细节</h5><ul>
+<li><strong>步骤</strong>：指定损失函数和优化器后，调用 <code>model.fit(X, y, epochs=...)</code>。</li>
+<li><strong>训练本质</strong>：通过反向传播与梯度下降不断更新权重和偏置。</li>
+</ul>
+<h5 id="2-激活函数选择"><a href="#2-激活函数选择" class="headerlink" title="2. 激活函数选择"></a>2. 激活函数选择</h5><ul>
+<li><strong>Sigmoid</strong>：输出 (0,1)，<strong>只用于二分类输出层</strong>。</li>
+<li><strong>ReLU</strong>：<code>max(0, z)</code>，计算快、缓解梯度消失，<strong>隐藏层默认首选</strong>。</li>
+<li><strong>线性激活</strong>：直接输出加权和，<strong>用于回归输出层</strong>。</li>
+<li><strong>为什么需要非线性</strong>：若无激活函数（或线性激活），多层网络仍等价于线性模型。</li>
+</ul>
+<h5 id="3-多分类-Multiclass-Classification"><a href="#3-多分类-Multiclass-Classification" class="headerlink" title="3. 多分类 (Multiclass Classification)"></a>3. 多分类 (Multiclass Classification)</h5><ul>
+<li><strong>Softmax 回归</strong>：输出层采用 Softmax，输出每个类别的概率，和为 1。</li>
+<li><strong>损失函数</strong>：稀疏分类交叉熵 <code>SparseCategoricalCrossentropy</code>。</li>
+<li><strong>代码改进</strong>：输出层设为 <code>linear</code>，损失函数加 <code>from_logits=True</code>，提升数值稳定性。</li>
+<li><strong>多标签分类（可选）</strong>：每个样本可属于多个类别，输出层用 Sigmoid 分别独立判断。</li>
+</ul>
+<h5 id="4-高级优化与层类型"><a href="#4-高级优化与层类型" class="headerlink" title="4. 高级优化与层类型"></a>4. 高级优化与层类型</h5><ul>
+<li><strong>Adam 优化器</strong>：自适应学习率，通常比梯度下降收敛更快、更稳定。</li>
+<li><strong>其他层类型</strong>：课程引入卷积层、全连接层等概念（后续课程会深入）。</li>
+</ul>
+<h5 id="5-反向传播（可选）"><a href="#5-反向传播（可选）" class="headerlink" title="5. 反向传播（可选）"></a>5. 反向传播（可选）</h5><ul>
+<li>利用链式法则逐层计算损失对各参数的梯度。</li>
+<li>计算图帮助可视化梯度流动。</li>
+</ul>
+<blockquote>
+<p><strong>项目应用提示</strong>：</p>
+<ul>
+<li>隐藏层统一用 <strong>ReLU</strong>；二分类输出层用 <strong>Sigmoid</strong>；多分类输出层用 <strong>Softmax</strong>；回归输出层用 <strong>线性</strong>。</li>
+<li>训练时优先使用 <strong>Adam</strong> 优化器，通常无需手动细调学习率。</li>
+<li>从二分类扩展到多分类，只需改输出层单元数和损失函数，其余结构可复用。</li>
+</ul>
+</blockquote>
+<hr>
+<h4 id="第六周：应用机器学习的实践建议"><a href="#第六周：应用机器学习的实践建议" class="headerlink" title="第六周：应用机器学习的实践建议"></a>第六周：应用机器学习的实践建议</h4><h5 id="1-模型评估与选择"><a href="#1-模型评估与选择" class="headerlink" title="1. 模型评估与选择"></a>1. 模型评估与选择</h5><ul>
+<li><strong>数据集划分</strong>：训练集 &#x2F; 交叉验证集 &#x2F; 测试集（如 60%&#x2F;20%&#x2F;20%）。</li>
+<li><strong>诊断工具</strong>：<ul>
+<li>高偏差 (欠拟合)：训练误差和验证误差都高，且接近。</li>
+<li>高方差 (过拟合)：训练误差很低，但验证误差远高于训练误差。</li>
+<li>学习曲线：判断添加数据或增加复杂度是否有帮助。</li>
+</ul>
+</li>
+<li><strong>基线</strong>：与人类表现或简单模型比较，判断是否有改善空间。</li>
+</ul>
+<h5 id="2-偏差与方差的处理"><a href="#2-偏差与方差的处理" class="headerlink" title="2. 偏差与方差的处理"></a>2. 偏差与方差的处理</h5><ul>
+<li><strong>高偏差</strong>：增加模型复杂度（更多层&#x2F;节点）、增加特征、减小正则化 λ。</li>
+<li><strong>高方差</strong>：增加训练数据、减少特征、加大正则化 λ、使用数据增强。</li>
+<li><strong>神经网络特点</strong>：大型网络往往低偏差，只要正则化和数据足够，可以同时实现低方差。</li>
+</ul>
+<h5 id="3-迭代开发流程"><a href="#3-迭代开发流程" class="headerlink" title="3. 迭代开发流程"></a>3. 迭代开发流程</h5><ul>
+<li><strong>误差分析</strong>：抽查错误样本，找出错误模式（如漏检某个类别），指导下一步改进方向。</li>
+<li><strong>数据扩充</strong>：数据增强（图像旋转&#x2F;裁剪）、合成数据、收集更多真实数据。</li>
+<li><strong>迁移学习</strong>：复用预训练模型（如在大规模图像上训练好的网络），仅针对特定任务微调最后几层，大幅节省数据和训练时间。</li>
+<li><strong>完整项目周期</strong>：<code>数据收集 → 模型训练 → 误差分析 → 改进数据/模型</code> 的循环。</li>
+<li><strong>公平与伦理</strong>：注意数据的偏见（如性别、种族）及其对模型预测产生的社会影响。</li>
+</ul>
+<h5 id="4-倾斜数据集处理（可选）"><a href="#4-倾斜数据集处理（可选）" class="headerlink" title="4. 倾斜数据集处理（可选）"></a>4. 倾斜数据集处理（可选）</h5><ul>
+<li>**精确率 (Precision)**：预测为正的样本中真正为正的比例。</li>
+<li>**召回率 (Recall)**：所有真正为正的样本中被成功预测的比例。</li>
+<li><strong>权衡</strong>：设定阈值调节 P&#x2F;R，使用 F1 分数综合衡量。</li>
+<li>适用场景：罕见病检测、欺诈识别等类别极不平衡的任务。</li>
+</ul>
+<blockquote>
+<p><strong>项目应用提示</strong>：</p>
+<ul>
+<li>永远不要只盯着训练集上的准确率；认真检查验证集&#x2F;测试集表现，绘制 <strong>学习曲线</strong> 诊断偏差与方差。</li>
+<li>项目遇到瓶颈时，先做 <strong>误差分析</strong>（手工检查 100 个错误样本），能发现数据或标签的系统性问题。</li>
+<li>数据量不足时，优先考虑 <strong>迁移学习</strong> 而非从头训练大模型。</li>
+<li>面对极不平衡数据，用 <strong>精确率-召回率</strong> 评估而非简单准确率。</li>
+</ul>
+</blockquote>
+<hr>
+<h4 id="第七周：决策树与集成学习"><a href="#第七周：决策树与集成学习" class="headerlink" title="第七周：决策树与集成学习"></a>第七周：决策树与集成学习</h4><h5 id="1-决策树模型"><a href="#1-决策树模型" class="headerlink" title="1. 决策树模型"></a>1. 决策树模型</h5><ul>
+<li><strong>结构</strong>：由根节点、内部节点（判断条件）和叶节点（预测结果）构成。</li>
+<li><strong>学习过程</strong>：递归地选择最佳特征进行划分，使子节点更“纯”。</li>
+</ul>
+<h5 id="2-划分标准"><a href="#2-划分标准" class="headerlink" title="2. 划分标准"></a>2. 划分标准</h5><ul>
+<li><strong>纯度</strong>：分类问题常用熵或基尼不纯度。</li>
+<li><strong>信息增益</strong>：划分前后的不确定性下降量，选择信息增益最大的特征进行分割。</li>
+<li><strong>处理方式</strong>：<ul>
+<li>分类特征：独热编码，在某个特征值上分裂。</li>
+<li>连续特征：选择一个阈值，划分为两部分。</li>
+</ul>
+</li>
+<li><strong>回归树（可选）</strong>：预测连续值，依据划分后方差减小量来选择特征。</li>
+</ul>
+<h5 id="3-树集成方法"><a href="#3-树集成方法" class="headerlink" title="3. 树集成方法"></a>3. 树集成方法</h5><ul>
+<li><strong>随机森林</strong>：<ul>
+<li>对训练集进行有放回抽样（Bagging）生成多份数据。</li>
+<li>每棵树随机选择一部分特征进行训练。</li>
+<li>投票（分类）或平均（回归）得出最终结果。</li>
+<li>降低过拟合，提高稳定性。</li>
+</ul>
+</li>
+<li><strong>XGBoost</strong> (Boosting)：<ul>
+<li>串行训练树，每棵新树专注于纠正前面树的错误。</li>
+<li>通常比随机森林性能更强，但调参更敏感。</li>
+</ul>
+</li>
+<li><strong>选取准则</strong>：决策树&#x2F;树集成适用于表格数据，解释性强；神经网络更适合图像&#x2F;文本等非结构化数据。</li>
+</ul>
+<blockquote>
+<p><strong>项目应用提示</strong>：</p>
+<ul>
+<li>面对表格数据（如客户信息表），<strong>XGBoost 或随机森林</strong> 经常是比神经网络更好的起点，训练快且无需特征缩放。</li>
+<li>需要向非技术人员解释模型时，<strong>决策树</strong> 可提供直观的规则链。</li>
+<li>如果单个决策树过拟合严重，尝试 <strong>随机森林</strong>；追求极致性能可用 <strong>XGBoost</strong>，并利用交叉验证调整树深度和学习率。</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="🔗-整体知识脉络（从线性基础到树与神经网络）"><a href="#🔗-整体知识脉络（从线性基础到树与神经网络）" class="headerlink" title="🔗 整体知识脉络（从线性基础到树与神经网络）"></a>🔗 整体知识脉络（从线性基础到树与神经网络）</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[入门模型]</span><br><span class="line">   ├── 回归: 线性回归 (W1-W2) → 正则化 (W3) → 神经网络回归 (输出层线性)</span><br><span class="line">   ├── 分类: 逻辑回归 (W3) → 神经网络二分类 (Sigmoid 输出)</span><br><span class="line">   └── 多分类: Softmax (W5) → 神经网络多分类</span><br><span class="line"></span><br><span class="line">[模型优化与评估]</span><br><span class="line">   ├── 偏差/方差诊断，学习曲线 (W6)</span><br><span class="line">   ├── 误差分析，迁移学习 (W6)</span><br><span class="line">   └── 处理倾斜数据集 (W6)</span><br><span class="line"></span><br><span class="line">[进阶模型]</span><br><span class="line">   ├── 神经网络: 前向传播、反向传播、TensorFlow 实践 (W4-W5)</span><br><span class="line">   └── 决策树与集成: 随机森林、XGBoost (W7)</span><br></pre></td></tr></table></figure>
+
+<h3 id="🧭-综合项目应用检查清单"><a href="#🧭-综合项目应用检查清单" class="headerlink" title="🧭 综合项目应用检查清单"></a>🧭 综合项目应用检查清单</h3><p>拿到一个新项目时，你可以按以下步骤结合所有已学知识:</p>
+<ol>
+<li><p><strong>问题定义与数据获取</strong></p>
+<ul>
+<li>明确是回归、二分类、多分类还是多标签？</li>
+<li>收集数据，初步探索分布和标签比例。</li>
+</ul>
+</li>
+<li><p><strong>基线建立</strong> (W6)</p>
+<ul>
+<li>建立一个简单模型（如线性模型或浅层决策树）作为性能基线。</li>
+<li>评估该基线的偏差和方差。</li>
+</ul>
+</li>
+<li><p><strong>快速试验</strong></p>
+<ul>
+<li><strong>表格数据</strong>：先尝试 XGBoost &#x2F; 随机森林 (W7)，无需特征缩放，可快速得到较强基线。</li>
+<li><strong>图像&#x2F;文本等复杂数据</strong>：使用神经网络 (W4)，借助迁移学习 (W6)。</li>
+</ul>
+</li>
+<li><p><strong>模型诊断与迭代</strong> (W6)</p>
+<ul>
+<li>画学习曲线，判断高偏差还是高方差。</li>
+<li>高偏差 → 加深网络、增加层节点、尝试多项式特征。</li>
+<li>高方差 → 收集更多数据、数据增强、增大正则化 λ、使用 Dropout（后续课程）。</li>
+<li>执行误差分析，发现模型在哪些样本上犯错，针对性改进数据或特征。</li>
+</ul>
+</li>
+<li><p><strong>性能评估</strong></p>
+<ul>
+<li>均衡数据集：准确率，结合验证&#x2F;测试集。</li>
+<li>倾斜数据集：精确率、召回率、F1 分数 (W6)。</li>
+<li>多分类：关注各类别的 recall，避免类不平衡被忽略。</li>
+</ul>
+</li>
+<li><p><strong>最终调优</strong></p>
+<ul>
+<li>使用学习率衰减或 Adam 优化器 (W5) 加速神经网络收敛。</li>
+<li>对树模型进行交叉验证调参（树的深度、学习率、样本抽样比例）。</li>
+<li>集成多个强模型（stacking）可能进一步提升。</li>
+</ul>
+</li>
+</ol>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/shuo-liu16">Projects</a></li>
+        
+          <li><a href="/about/resume/Shuo_Liu_s_resume__chinese1_.pdf">Resume</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Advanced-Learning-Algorithms"><span class="toc-number">1.</span> <span class="toc-text">Advanced Learning Algorithms</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E5%91%A8%EF%BC%9A%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88Neural-Networks%EF%BC%89%E2%80%94%E2%80%94%E4%BB%8E%E7%9B%B4%E8%A7%89%E5%88%B0%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.</span> <span class="toc-text">第四周：神经网络（Neural Networks）——从直觉到实现</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9B%B4%E8%A7%89"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 神经网络直觉</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 神经网络模型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E4%B8%A4%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-number">1.1.3.</span> <span class="toc-text">3. 两种实现方式</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E5%91%A8%EF%BC%9A%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%AE%AD%E7%BB%83%E4%B8%8E%E5%A4%9A%E5%88%86%E7%B1%BB"><span class="toc-number">1.2.</span> <span class="toc-text">第五周：神经网络训练与多分类</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83%E7%BB%86%E8%8A%82"><span class="toc-number">1.2.1.</span> <span class="toc-text">1. 模型训练细节</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%E9%80%89%E6%8B%A9"><span class="toc-number">1.2.2.</span> <span class="toc-text">2. 激活函数选择</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E5%A4%9A%E5%88%86%E7%B1%BB-Multiclass-Classification"><span class="toc-number">1.2.3.</span> <span class="toc-text">3. 多分类 (Multiclass Classification)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E9%AB%98%E7%BA%A7%E4%BC%98%E5%8C%96%E4%B8%8E%E5%B1%82%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.2.4.</span> <span class="toc-text">4. 高级优化与层类型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-number">1.2.5.</span> <span class="toc-text">5. 反向传播（可选）</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E5%91%A8%EF%BC%9A%E5%BA%94%E7%94%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%AE%9E%E8%B7%B5%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.3.</span> <span class="toc-text">第六周：应用机器学习的实践建议</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E9%80%89%E6%8B%A9"><span class="toc-number">1.3.1.</span> <span class="toc-text">1. 模型评估与选择</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%81%8F%E5%B7%AE%E4%B8%8E%E6%96%B9%E5%B7%AE%E7%9A%84%E5%A4%84%E7%90%86"><span class="toc-number">1.3.2.</span> <span class="toc-text">2. 偏差与方差的处理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E8%BF%AD%E4%BB%A3%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="toc-number">1.3.3.</span> <span class="toc-text">3. 迭代开发流程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E5%80%BE%E6%96%9C%E6%95%B0%E6%8D%AE%E9%9B%86%E5%A4%84%E7%90%86%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-number">1.3.4.</span> <span class="toc-text">4. 倾斜数据集处理（可选）</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E5%91%A8%EF%BC%9A%E5%86%B3%E7%AD%96%E6%A0%91%E4%B8%8E%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.4.</span> <span class="toc-text">第七周：决策树与集成学习</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E5%86%B3%E7%AD%96%E6%A0%91%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text">1. 决策树模型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%88%92%E5%88%86%E6%A0%87%E5%87%86"><span class="toc-number">1.4.2.</span> <span class="toc-text">2. 划分标准</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E6%A0%91%E9%9B%86%E6%88%90%E6%96%B9%E6%B3%95"><span class="toc-number">1.4.3.</span> <span class="toc-text">3. 树集成方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%97-%E6%95%B4%E4%BD%93%E7%9F%A5%E8%AF%86%E8%84%89%E7%BB%9C%EF%BC%88%E4%BB%8E%E7%BA%BF%E6%80%A7%E5%9F%BA%E7%A1%80%E5%88%B0%E6%A0%91%E4%B8%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">🔗 整体知识脉络（从线性基础到树与神经网络）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%A7%AD-%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE%E5%BA%94%E7%94%A8%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="toc-number">3.</span> <span class="toc-text">🧭 综合项目应用检查清单</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&text=Advanced Learning Algorithms"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&title=Advanced Learning Algorithms"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&is_video=false&description=Advanced Learning Algorithms"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Advanced Learning Algorithms&body=Check out this article: https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&title=Advanced Learning Algorithms"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&title=Advanced Learning Algorithms"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&title=Advanced Learning Algorithms"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&title=Advanced Learning Algorithms"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&name=Advanced Learning Algorithms&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shuo-liu16.github.io/2026/04/23/Advanced-Learning-Algorithms/&t=Advanced Learning Algorithms"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2026
+    shuo-liu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/shuo-liu16">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/resume/Shuo_Liu_s_resume__chinese1_.pdf">Resume</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

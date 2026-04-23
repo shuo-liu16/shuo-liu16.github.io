@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Unsupervised Learning, Recommenders, Reinforcement Learning第八周：无监督学习——聚类与异常检测1. 聚类 (Clustering) 目标：将未标注数据划分成有意义的群组（簇）。 K-means 算法： 步骤：①随机初始化 K 个质心；②分配每个点到最近的质心；③更新质心为该簇均值的点；重复②③直到收敛。 优化目标：最小化簇内平方和 (di">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unsupervised Learning, Recommenders, Reinforcement Learning">
+<meta property="og:url" content="https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/index.html">
+<meta property="og:site_name" content="Dream&#39;s Profile">
+<meta property="og:description" content="Unsupervised Learning, Recommenders, Reinforcement Learning第八周：无监督学习——聚类与异常检测1. 聚类 (Clustering) 目标：将未标注数据划分成有意义的群组（簇）。 K-means 算法： 步骤：①随机初始化 K 个质心；②分配每个点到最近的质心；③更新质心为该簇均值的点；重复②③直到收敛。 优化目标：最小化簇内平方和 (di">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-04-23T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-04-23T14:51:23.845Z">
+<meta property="article:author" content="shuo-liu">
+<meta property="article:tag" content="机器学习, 无监督学习, 聚类, 推荐系统, 强化学习">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Unsupervised Learning, Recommenders, Reinforcement Learning</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/shuo-liu16">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/resume/Shuo_Liu_s_resume__chinese1_.pdf">Resume</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2026/04/23/Advanced-Learning-Algorithms/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/11/22/%E3%80%8A%E6%97%A9%E8%AF%A5%E8%BF%99%E6%A0%B7%E5%AD%A6%E8%8B%B1%E8%AF%AD%EF%BC%81%E3%80%8B/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&text=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&title=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&is_video=false&description=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Unsupervised Learning, Recommenders, Reinforcement Learning&body=Check out this article: https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&title=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&title=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&title=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&title=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&name=Unsupervised Learning, Recommenders, Reinforcement Learning&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&t=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unsupervised-Learning-Recommenders-Reinforcement-Learning"><span class="toc-number">1.</span> <span class="toc-text">Unsupervised Learning, Recommenders, Reinforcement Learning</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%85%AB%E5%91%A8%EF%BC%9A%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E8%81%9A%E7%B1%BB%E4%B8%8E%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B"><span class="toc-number">1.1.</span> <span class="toc-text">第八周：无监督学习——聚类与异常检测</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E8%81%9A%E7%B1%BB-Clustering"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 聚类 (Clustering)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B-Anomaly-Detection"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 异常检测 (Anomaly Detection)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B9%9D%E5%91%A8%EF%BC%9A%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F-Recommender-Systems"><span class="toc-number">1.2.</span> <span class="toc-text">第九周：推荐系统 (Recommender Systems)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4-Collaborative-Filtering"><span class="toc-number">1.2.1.</span> <span class="toc-text">1. 协同过滤 (Collaborative Filtering)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%9F%BA%E4%BA%8E%E5%86%85%E5%AE%B9%E7%9A%84%E8%BF%87%E6%BB%A4-Content-based-Filtering"><span class="toc-number">1.2.2.</span> <span class="toc-text">2. 基于内容的过滤 (Content-based Filtering)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AF%E9%80%89%EF%BC%9A%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90-PCA"><span class="toc-number">1.3.</span> <span class="toc-text">可选：主成分分析 (PCA)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E5%91%A8%EF%BC%9A%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0-Reinforcement-Learning"><span class="toc-number">1.4.</span> <span class="toc-text">第十周：强化学习 (Reinforcement Learning)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.4.1.</span> <span class="toc-text">1. 基本概念</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E6%B7%B1%E5%BA%A6-Q-%E7%BD%91%E7%BB%9C-Deep-Q-Network-DQN"><span class="toc-number">1.4.2.</span> <span class="toc-text">2. 深度 Q-网络 (Deep Q-Network, DQN)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%A7%AD-%E5%AE%8C%E6%95%B4%E8%AF%BE%E7%A8%8B%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E6%80%BB%E8%A7%88"><span class="toc-number">2.</span> <span class="toc-text">🧭 完整课程知识图谱总览</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Unsupervised Learning, Recommenders, Reinforcement Learning
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">shuo-liu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2026-04-23T02:00:00.000Z" class="dt-published" itemprop="datePublished">2026-04-23</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0-%E8%81%9A%E7%B1%BB-%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习, 无监督学习, 聚类, 推荐系统, 强化学习</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h3 id="Unsupervised-Learning-Recommenders-Reinforcement-Learning"><a href="#Unsupervised-Learning-Recommenders-Reinforcement-Learning" class="headerlink" title="Unsupervised Learning, Recommenders, Reinforcement Learning"></a>Unsupervised Learning, Recommenders, Reinforcement Learning</h3><h4 id="第八周：无监督学习——聚类与异常检测"><a href="#第八周：无监督学习——聚类与异常检测" class="headerlink" title="第八周：无监督学习——聚类与异常检测"></a>第八周：无监督学习——聚类与异常检测</h4><h5 id="1-聚类-Clustering"><a href="#1-聚类-Clustering" class="headerlink" title="1. 聚类 (Clustering)"></a>1. 聚类 (Clustering)</h5><ul>
+<li><strong>目标</strong>：将未标注数据划分成有意义的群组（簇）。</li>
+<li><strong>K-means 算法</strong>：<ul>
+<li>步骤：①随机初始化 K 个质心；②分配每个点到最近的质心；③更新质心为该簇均值的点；重复②③直到收敛。</li>
+<li><strong>优化目标</strong>：最小化簇内平方和 (distortion) ( J &#x3D; \frac{1}{m} \sum_{i&#x3D;1}^m |x^{(i)} - \mu_{c^{(i)}}|^2 )。</li>
+<li><strong>初始化策略</strong>：多次随机初始化并选择最低代价的结果（避免局部最优）。</li>
+<li><strong>选择 K 值</strong>：尝试不同 K，利用“肘部法则”或考虑后续任务需求。</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-异常检测-Anomaly-Detection"><a href="#2-异常检测-Anomaly-Detection" class="headerlink" title="2. 异常检测 (Anomaly Detection)"></a>2. 异常检测 (Anomaly Detection)</h5><ul>
+<li><strong>目标</strong>：识别与大多数数据分布显著不同的异常样本。</li>
+<li><strong>高斯分布方法</strong>：<ul>
+<li>假设每个特征服从高斯分布，计算概率 ( p(x) &#x3D; \prod_{j&#x3D;1}^n p(x_j; \mu_j, \sigma_j^2) )。</li>
+<li>若 ( p(x) &lt; \epsilon ) （阈值），则标记为异常。</li>
+</ul>
+</li>
+<li><strong>系统构建</strong>：<ul>
+<li>使用正常数据（和极少量异常数据）训练&#x2F;验证。</li>
+<li>评估指标：因为类别极度不平衡，使用精确率、召回率、F1 分数。</li>
+</ul>
+</li>
+<li><strong>特征选择</strong>：选择更接近高斯分布的特征，或通过变换（log、sqrt）调整；可创建新特征以暴露异常（如组合特征）。</li>
+<li><strong>与监督学习的对比</strong>：<ul>
+<li>异常检测：正样本（异常）极少且类型多样，无法学到完整模式；常用于欺诈检测、设备故障预警。</li>
+<li>监督学习：正负样本充足且平衡，能学到稳定决策边界。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>项目应用提示</strong>：</p>
+<ul>
+<li><strong>客户分群</strong>：用 K-means 将用户按行为分群，制定差异化营销策略。先标准化特征，再用肘部法则尝试 K&#x3D;3~8。</li>
+<li><strong>欺诈检测</strong>：先尝试异常检测，当正常交易量远大于欺诈交易且欺诈手法不断变化时尤其有效。记得特征变换使其接近正态。</li>
+<li>评估异常检测时要看查全率（抓到多少真正的异常）和查准率，（避免误报过多）。</li>
+</ul>
+</blockquote>
+<hr>
+<h4 id="第九周：推荐系统-Recommender-Systems"><a href="#第九周：推荐系统-Recommender-Systems" class="headerlink" title="第九周：推荐系统 (Recommender Systems)"></a>第九周：推荐系统 (Recommender Systems)</h4><h5 id="1-协同过滤-Collaborative-Filtering"><a href="#1-协同过滤-Collaborative-Filtering" class="headerlink" title="1. 协同过滤 (Collaborative Filtering)"></a>1. 协同过滤 (Collaborative Filtering)</h5><ul>
+<li><strong>思想</strong>：根据用户-物品的交互矩阵（打分、喜欢&#x2F;点击），学习用户偏好和物品属性。</li>
+<li><strong>算法</strong>：分别学习用户向量 ( w_u ) 和物品向量 ( x_i )，使内积 ( w_u \cdot x_i ) 逼近评分。</li>
+<li><strong>损失函数</strong>：同时优化 ( w ) 和 ( x )（以及偏置项），加上正则化项。</li>
+<li><strong>二元标签处理</strong>：对“喜欢&#x2F;点击&#x2F;收藏”，可直接用逻辑回归模型，损失函数替换为交叉熵。</li>
+<li><strong>均值归一化</strong>：处理新用户（冷启动），通过减去用户平均评分（或物品平均）来避免预测偏低。</li>
+<li><strong>实现细节</strong>：TensorFlow 中可自定义训练循环，通过梯度带 (GradientTape) 同时更新用户向量和物品向量矩阵。</li>
+<li><strong>寻找相关物品</strong>：计算物品向量间的相似度（如余弦相似度）。</li>
+</ul>
+<h5 id="2-基于内容的过滤-Content-based-Filtering"><a href="#2-基于内容的过滤-Content-based-Filtering" class="headerlink" title="2. 基于内容的过滤 (Content-based Filtering)"></a>2. 基于内容的过滤 (Content-based Filtering)</h5><ul>
+<li><strong>与协同过滤的区别</strong>：<ul>
+<li>协同过滤：仅依赖交互矩阵，不需要物品&#x2F;用户特征。</li>
+<li>内容过滤：利用物品和用户的特征（如电影类型、导演、用户人口统计）来学习向量。</li>
+</ul>
+</li>
+<li><strong>深度学习方法</strong>：<ul>
+<li>构建用户网络（接受用户特征输出用户向量 ( v_u )）和物品网络（接受物品特征输出物品向量 ( v_i )）。</li>
+<li>预测：( v_u \cdot v_i )。</li>
+</ul>
+</li>
+<li><strong>大规模推荐</strong>：使用近似最近邻检索（ANN）快速从百万级物品中筛选出 top-k，无需实时计算所有物品得分。</li>
+<li><strong>伦理考量</strong>：过滤过度会导致“信息茧房”；注意有害内容推荐；保护用户隐私。</li>
+</ul>
+<blockquote>
+<p><strong>项目应用提示</strong>：</p>
+<ul>
+<li>交互数据丰富但特征稀缺时用协同过滤；冷启动严重且有丰富物品&#x2F;用户属性时用内容过滤。</li>
+<li>结合两者可构建混合推荐（Hybrid），通常效果更佳。</li>
+<li>部署时，用离线评估（命中率均方误差），后实施在线A&#x2F;B测试。用 ANN 加速大规模召回。</li>
+</ul>
+</blockquote>
+<hr>
+<h4 id="可选：主成分分析-PCA"><a href="#可选：主成分分析-PCA" class="headerlink" title="可选：主成分分析 (PCA)"></a>可选：主成分分析 (PCA)</h4><ul>
+<li><strong>目的</strong>：降低特征维度，加速训练、压缩数据或可视化（2D&#x2F;3D）。</li>
+<li><strong>步骤</strong>：先标准化，计算协方差矩阵，取前 k 个主成分向量进行投影。</li>
+<li><strong>与聚类的差异</strong>：PCA 是非监督降维，K-means 是聚类；两者可结合（降维后再聚类）。</li>
+</ul>
+<hr>
+<h4 id="第十周：强化学习-Reinforcement-Learning"><a href="#第十周：强化学习-Reinforcement-Learning" class="headerlink" title="第十周：强化学习 (Reinforcement Learning)"></a>第十周：强化学习 (Reinforcement Learning)</h4><h5 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h5><ul>
+<li><strong>目标</strong>：智能体在环境中学习采取动作以最大化累积奖励。</li>
+<li><strong>关键术语</strong>：<ul>
+<li>状态 (State) ( s )：环境的当前情况。</li>
+<li>动作 (Action) ( a )：智能体的选择。</li>
+<li>奖励 (Reward) ( R(s) ) 或 ( R(s,a) )。</li>
+<li>回报 (Return)：从当前时刻开始的累积折扣奖励 ( G_t &#x3D; \sum_{k&#x3D;0}^\infty \gamma^k R_{t+k+1} )。</li>
+<li>策略 (Policy) ( \pi(s) )：状态到动作的映射，决定行为。</li>
+</ul>
+</li>
+<li>**状态-动作价值函数 (Q-function)**：( Q(s,a) ) 表示在状态 ( s ) 执行动作 ( a ) 之后，遵循最优策略所能获得的期望回报。</li>
+<li><strong>贝尔曼方程</strong>：( Q(s,a) &#x3D; R(s) + \gamma \max_{a’} Q(s’, a’) )。</li>
+</ul>
+<h5 id="2-深度-Q-网络-Deep-Q-Network-DQN"><a href="#2-深度-Q-网络-Deep-Q-Network-DQN" class="headerlink" title="2. 深度 Q-网络 (Deep Q-Network, DQN)"></a>2. 深度 Q-网络 (Deep Q-Network, DQN)</h5><ul>
+<li><strong>解决连续状态空间</strong>：用神经网络 ( Q(s,a; \theta) ) 近似 Q 函数，输入状态，输出所有动作的 Q 值。</li>
+<li><strong>训练方法</strong>：<ul>
+<li>经验回放 (Experience Replay)：存储转移 (s,a,r,s’,done) 到缓冲区，随机抽小批量训练，打破数据相关性。</li>
+<li>固定 Q 目标 (Fixed Q-targets)：定期更新目标网络参数，稳定训练。</li>
+<li>ϵ-贪婪策略：以概率 ϵ 随机探索，否则选择最优动作，平衡探索与利用。</li>
+</ul>
+</li>
+<li><strong>改进技巧</strong>：<ul>
+<li>软更新 (Soft Updates)：动量更新目标网络参数。</li>
+<li>小批量训练 (Mini-batch)。</li>
+</ul>
+</li>
+<li><strong>应用示例</strong>：月球着陆器 (Lunar Lander) 项目，通过 DQN 学习平稳着陆。</li>
+</ul>
+<blockquote>
+<p><strong>项目应用提示</strong>：</p>
+<ul>
+<li>强化学习适用于序列决策问题：游戏AI、机器人控制、动态定价、库存管理。</li>
+<li>开始前先明确定义状态、动作、奖励函数；奖励函数设计直接影响学习效率和结果。</li>
+<li>用 DQN 处理有限离散动作空间；策略梯度方法（后续进阶）可处理连续动作。</li>
+<li>训练成本高，先在仿真环境中迭代，再迁移到现实（Sim-to-Real）。</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="🧭-完整课程知识图谱总览"><a href="#🧭-完整课程知识图谱总览" class="headerlink" title="🧭 完整课程知识图谱总览"></a>🧭 完整课程知识图谱总览</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[监督学习]</span><br><span class="line">├── 回归: 线性/多项式 (W1-2) → 正则化 (W3) → 神经网络回归 (W4-5)</span><br><span class="line">├── 二分类: 逻辑回归 (W3) → 神经网络二分类 (W4-5)</span><br><span class="line">└── 多分类: Softmax (W5) → 神经网络多分类 (W5)</span><br><span class="line"></span><br><span class="line">[无监督学习] (W8)</span><br><span class="line">├── 聚类: K-means</span><br><span class="line">└── 异常检测: 高斯概率模型</span><br><span class="line"></span><br><span class="line">[推荐系统] (W9)</span><br><span class="line">├── 协同过滤</span><br><span class="line">└── 深度内容过滤</span><br><span class="line"></span><br><span class="line">[强化学习] (W10)</span><br><span class="line">└── 深度 Q-网络 (DQN)</span><br><span class="line"></span><br><span class="line">[通用实践]</span><br><span class="line">├── 偏差/方差、学习曲线、误差分析 (W6)</span><br><span class="line">├── 迁移学习、数据增强 (W6)</span><br><span class="line">└── 决策树与集成: 随机森林、XGBoost (W7)</span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/shuo-liu16">Projects</a></li>
+        
+          <li><a href="/about/resume/Shuo_Liu_s_resume__chinese1_.pdf">Resume</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unsupervised-Learning-Recommenders-Reinforcement-Learning"><span class="toc-number">1.</span> <span class="toc-text">Unsupervised Learning, Recommenders, Reinforcement Learning</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%85%AB%E5%91%A8%EF%BC%9A%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E8%81%9A%E7%B1%BB%E4%B8%8E%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B"><span class="toc-number">1.1.</span> <span class="toc-text">第八周：无监督学习——聚类与异常检测</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E8%81%9A%E7%B1%BB-Clustering"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 聚类 (Clustering)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B-Anomaly-Detection"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 异常检测 (Anomaly Detection)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B9%9D%E5%91%A8%EF%BC%9A%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F-Recommender-Systems"><span class="toc-number">1.2.</span> <span class="toc-text">第九周：推荐系统 (Recommender Systems)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4-Collaborative-Filtering"><span class="toc-number">1.2.1.</span> <span class="toc-text">1. 协同过滤 (Collaborative Filtering)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%9F%BA%E4%BA%8E%E5%86%85%E5%AE%B9%E7%9A%84%E8%BF%87%E6%BB%A4-Content-based-Filtering"><span class="toc-number">1.2.2.</span> <span class="toc-text">2. 基于内容的过滤 (Content-based Filtering)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AF%E9%80%89%EF%BC%9A%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90-PCA"><span class="toc-number">1.3.</span> <span class="toc-text">可选：主成分分析 (PCA)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E5%91%A8%EF%BC%9A%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0-Reinforcement-Learning"><span class="toc-number">1.4.</span> <span class="toc-text">第十周：强化学习 (Reinforcement Learning)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.4.1.</span> <span class="toc-text">1. 基本概念</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E6%B7%B1%E5%BA%A6-Q-%E7%BD%91%E7%BB%9C-Deep-Q-Network-DQN"><span class="toc-number">1.4.2.</span> <span class="toc-text">2. 深度 Q-网络 (Deep Q-Network, DQN)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%A7%AD-%E5%AE%8C%E6%95%B4%E8%AF%BE%E7%A8%8B%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E6%80%BB%E8%A7%88"><span class="toc-number">2.</span> <span class="toc-text">🧭 完整课程知识图谱总览</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&text=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&title=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&is_video=false&description=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Unsupervised Learning, Recommenders, Reinforcement Learning&body=Check out this article: https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&title=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&title=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&title=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&title=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&name=Unsupervised Learning, Recommenders, Reinforcement Learning&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shuo-liu16.github.io/2026/04/23/Unsupervised-Learning/&t=Unsupervised Learning, Recommenders, Reinforcement Learning"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2026
+    shuo-liu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/shuo-liu16">Projects</a></li><!--
+     --><!--
+       --><li><a href="/about/resume/Shuo_Liu_s_resume__chinese1_.pdf">Resume</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
